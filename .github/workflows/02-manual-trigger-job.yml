@@ -15,6 +15,6 @@ jobs:
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: Run a predefined job
-      run:  az ml job create --file ./mslearn-mlops/src/job.yml
+      run:  az ml job create --file ./mslearn-mlops/src/job.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
 
 

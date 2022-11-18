@@ -1,6 +1,6 @@
 name: Manually trigger an Azure Machine Learning job
 
-on:
+on: push
   workflow_dispatch:
 
 jobs:
@@ -15,5 +15,7 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: Run a predefined job
+      run:  az ml job create --file ./mslearn-mlops/src/job.yml
 
 

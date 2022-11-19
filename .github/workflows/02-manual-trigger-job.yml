@@ -14,6 +14,8 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: Azure login 2
+      run:  az login
     - name: Check where my directory
       run:  pwd
     - name: Set up a default resource group

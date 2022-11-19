@@ -14,7 +14,8 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: Trigger Azure Machine Learning job
-      run: |
-        az ml job create --file ./mslearn-mlops/src/job.yml
+    - name: Trigger the ML Job
+      run:  |
+      az ml job create --file ./mslearn-mlops/src/job.yml --resource-group diabetes-dev-rg --workspace-name aml-diabetes-dev
+
 

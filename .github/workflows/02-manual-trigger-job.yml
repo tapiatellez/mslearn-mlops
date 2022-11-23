@@ -14,14 +14,8 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: Azure login 2
-      run:  az login
     - name: Check where my directory
       run:  pwd
-    - name: Set up a default resource group
-      run:  az configure --defaults group="diabetes-dev-rg"
-    - name: Set default workspace
-      run:  az configure --defaults workspace="aml-diabetes-dev"
     - name: Trigger the ML Job
       run:  az ml job create --file src/job.yml
 

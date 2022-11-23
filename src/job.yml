@@ -10,6 +10,6 @@ inputs:
     path: azureml:diabetes-dev-folder:1
   reg_rate: 0.01
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: azureml:testdev-vm-tapiatellez
+compute: azureml:aml-cluster
 experiment_name: diabetes-testingexperiment
 description: Train a scikit-learn model that predicts whether an invidual has or not diabetes on the diabetes dataset. 

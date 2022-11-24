@@ -4,4 +4,4 @@ on: [pull_request]
 
 jobs:
   name: Placeholder
-    run: echo "Will add code checks here in next challenge"
+  run: echo "Will add code checks here in next challenge"

@@ -4,7 +4,8 @@ on: [pull_request]
 
 jobs:
   test:
+
     runs-on: ubuntu-latest
     steps:
-    - name: Placeholder
+    - name: Install az ml extension
       run: echo "Will add code check here in next challenge"

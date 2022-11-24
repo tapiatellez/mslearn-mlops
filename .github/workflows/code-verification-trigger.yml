@@ -2,10 +2,9 @@ name: Code verification trigger when a pull request is made
 
 on: [pull_request]
 
-jobs:  
+jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
     - name: Placeholder
       run: echo "Will add code check here in next challenge"

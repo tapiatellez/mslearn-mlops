@@ -1,26 +1,50 @@
 name: Manually trigger Development and Production MLJobs
 
-on: 
+on:
   workflow_dispatch:
 jobs:
-  train:
-    runs-on: ubuntu-latest
-    environment:
-        name: dev
-    steps:
-    - name: Check out repo
-      uses: actions/checkout@main
-    - name: Install az ml extension
-      run: az extension add -n ml -y
-    - name: Azure login
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS_DEV}}
-    - name: Check where my directory
-      run:  pwd
-    - name: Set up a default resource group
-      run:  az configure --defaults group="diabetes-dev-rg"
-    - name: Set default workspace
-      run:  az configure --defaults workspace="aml-diabetes-dev"
-    - name: Trigger the ML Job
-      run:  az ml job create --file src/job.yml
+  job1:
+    train:
+      runs-on: ubuntu-latest
+      environment:
+          name: dev
+      steps:
+      - name: Check out repo
+        uses: actions/checkout@main
+      - name: Install az ml extension
+        run: az extension add -n ml -y
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS_DEV}}
+      - name: Check where my directory
+        run:  pwd
+      - name: Set up a default resource group
+        run:  az configure --defaults group="diabetes-dev-rg"
+      - name: Set default workspace
+        run:  az configure --defaults workspace="aml-diabetes-dev"
+      - name: Trigger the ML Job
+        run:  az ml job create --file src/job.yml --stream -s
+  job2:
+    train:
+      needs: job1
+      runs-on: ubuntu-latest
+      environment:
+          name: prod
+      steps:
+      - name: Check out repo
+        uses: actions/checkout@main
+      - name: Install az ml extension
+        run: az extension add -n ml -y
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS_PROD}}
+      - name: Check where my directory
+        run:  pwd
+      - name: Set up a default resource group
+        run:  az configure --defaults group="diabetes-dev-rg"
+      - name: Set default workspace
+        run:  az configure --defaults workspace="aml-diabetes-dev"
+      - name: Trigger the ML Job
+        run:  az ml job create --file src/job_prod.yml --stream -s

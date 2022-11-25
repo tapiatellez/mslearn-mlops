@@ -1,0 +1,46 @@
+name: Manually trigger an Azure Machine Learning job
+
+on: 
+  workflow_dispatch:
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@main
+    - name: Install az ml extension
+      run: az extension add -n ml -y
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: Check where my directory
+      run:  pwd
+    - name: Set up a default resource group
+      run:  az configure --defaults group="diabetes-dev-rg"
+    - name: Set default workspace
+      run:  az configure --defaults workspace="aml-diabetes-dev"
+    - name: Get the model from the last run
+      run:  JOB_NAME=$(az ml job list --query "[0].name" | tr -d '"')
+    - name: Register the model 
+      run:  az ml model create --name "$JOB_NAME-diabetes-model" \
+                   --type "mlflow_model" \
+                   --path "azureml://jobs/$JOB_NAME/outputs/artifacts/model"
+    - name: Create endpoint yaml file
+      run:  echo -e "\$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json\nname: $JOB_NAME-diabetes-endpoint\nauth_mode: key"\
+            > create-endpoint.yml
+    - name: Create endpoint
+      run: az ml online-endpoint create\
+            --name $JOB_NAME-diabetes-endpoint\
+            -f create-endpoint.yaml
+    - name: Create deployment file
+      run: echo -e "\$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json\nname: sklearn-deployment\nendpoint_name: my-endpoint\nmodel: azureml:mir-sample-sklearn-mlflow-model@latest\ninstance_type: Standard_DS2_v2\ninstance_count: 1"\
+           > create-deployment.yml
+    - name: Create deployment and assign all traffic to it
+      run: az ml online-deployment create --name $JOB_NAME-diabetes-deployment\
+                                          --endpoint $JOB_NAME-diabetes-endpoint\ 
+                                          -f create-deployment.yaml\ 
+                                          --all-traffic 
+
+                                        
+

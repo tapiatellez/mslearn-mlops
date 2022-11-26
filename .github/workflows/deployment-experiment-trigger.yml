@@ -29,3 +29,5 @@ jobs:
     - name: Create endpoint yaml file
       run:  |
         printf "\$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json\nname: $JOB_NAME-diabetes-endpoint\nauth_mode: key" > create-endpoint.yml
+    - name: Check the yaml endpoint file
+      run:  cat create-endpoint.yml

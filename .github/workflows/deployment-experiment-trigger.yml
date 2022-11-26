@@ -32,8 +32,8 @@ jobs:
     - name: Check the yaml endpoint file
       run:  cat create-endpoint.yml
     - name: Create endpoint
-      run: az ml online-endpoint create\
-            --name $JOB_NAME-diabetes-endpoint\
+      run: az ml online-endpoint create |
+            --name $JOB_NAME-diabetes-endpoint |
             -f create-endpoint.yaml
     - name: Create deployment file
       run: |
@@ -41,7 +41,7 @@ jobs:
     - name: Check deployment file
       run: cat create-deployment.yml
     - name: Create deployment and assign all traffic to it
-      run: az ml online-deployment create --name $JOB_NAME-diabetes-deployment\
-                                          --endpoint $JOB_NAME-diabetes-endpoint\ 
-                                          -f create-deployment.yml\ 
+      run: az ml online-deployment create --name $JOB_NAME-diabetes-deployment |
+                                          --endpoint $JOB_NAME-diabetes-endpoint | 
+                                          -f create-deployment.yml |
                                           --all-traffic 

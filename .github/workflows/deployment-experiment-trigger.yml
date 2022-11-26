@@ -28,22 +28,22 @@ jobs:
       run:  az ml model create --name "$JOB_NAME-diabetes-model" --type "mlflow_model" --path "azureml://jobs/$JOB_NAME/outputs/artifacts/model"
     - name: Create endpoint yaml file
       run:  |
-        printf "\$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json\nname: $JOB_NAME-diabetes-endpoint\nauth_mode: key" > create-endpoint.yml
+        printf "\$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json\nname: $JOB_NAME-db-ep\nauth_mode: key" > create-endpoint.yml
     - name: Check the yaml endpoint file
       run:  cat create-endpoint.yml
     - name: Create endpoint
       run: |
         az ml online-endpoint create \
-        --name $JOB_NAME-diabetes-endpoint \
+        --name $JOB_NAME-db-ep \
         -f create-endpoint.yml
     - name: Create deployment file
       run: |
-        printf "\$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json\nname: $JOB_NAME-diabetes-deployment\nendpoint_name: $JOB_NAME-diabetes-endpoint\nmodel: azureml:$JOB_NAME-diabetes-modell@latest\ninstance_type: Standard_DS2_v2\ninstance_count: 1" > create-deployment.yml
+        printf "\$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json\nname: $JOB_NAME-diabetes-deployment\nendpoint_name: $JOB_NAME-db-ep\nmodel: azureml:$JOB_NAME-diabetes-modell@latest\ninstance_type: Standard_DS2_v2\ninstance_count: 1" > create-deployment.yml
     - name: Check deployment file
       run: cat create-deployment.yml
     - name: Create deployment and assign all traffic to it
       run: |
         az ml online-deployment create --name $JOB_NAME-diabetes-deployment \
-                                       --endpoint $JOB_NAME-diabetes-endpoint \ 
+                                       --endpoint $JOB_NAME-db-ep \ 
                                        -f create-deployment.yml \
                                        --all-traffic 

@@ -45,4 +45,4 @@ jobs:
       run: ls
     - name: Create deployment and assign all traffic to it
       run: |
-        az ml online-deployment create --name $tapiatellez-db-dp --endpoint tapiatellez-db-ep --f create-deployment.yml --all-traffic 
+        az ml online-deployment create --file create-deployment.yml --name $tapiatellez-db-dp --endpoint tapiatellez-db-ep --all-traffic 

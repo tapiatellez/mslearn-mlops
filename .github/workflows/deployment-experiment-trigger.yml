@@ -42,5 +42,5 @@ jobs:
     - name: Create deployment and assign all traffic to it
       run: az ml online-deployment create --name $JOB_NAME-diabetes-deployment\
                                           --endpoint $JOB_NAME-diabetes-endpoint\ 
-                                          -f create-deployment.yaml\ 
+                                          -f create-deployment.yml\ 
                                           --all-traffic 

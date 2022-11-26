@@ -32,9 +32,10 @@ jobs:
     - name: Check the yaml endpoint file
       run:  cat create-endpoint.yml
     - name: Create endpoint
-      run: az ml online-endpoint create |
-            --name $JOB_NAME-diabetes-endpoint |
-            -f create-endpoint.yaml
+      run: |
+        az ml online-endpoint create \
+        --name $JOB_NAME-diabetes-endpoint \
+        -f create-endpoint.yaml
     - name: Create deployment file
       run: |
         printf "\$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json\nname: $JOB_NAME-diabetes-deployment\nendpoint_name: $JOB_NAME-diabetes-endpoint\nmodel: azureml:$JOB_NAME-diabetes-modell@latest\ninstance_type: Standard_DS2_v2\ninstance_count: 1" > create-deployment.yml

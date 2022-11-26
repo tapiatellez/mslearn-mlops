@@ -41,6 +41,8 @@ jobs:
         printf "\$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json\nname: $tapiatellez-db-dp\nendpoint_name: tapiatellez-db-ep\nmodel: azureml:$JOB_NAME-diabetes-modell@latest\ninstance_type: Standard_DS2_v2\ninstance_count: 1" > create-deployment.yml
     - name: Check deployment file
       run: cat create-deployment.yml
+    - name: Check that the deployment file is in the route
+      run: ls
     - name: Create deployment and assign all traffic to it
       run: |
         az ml online-deployment create --name $tapiatellez-db-dp --endpoint tapiatellez-db-ep --f create-deployment.yml --all-traffic 

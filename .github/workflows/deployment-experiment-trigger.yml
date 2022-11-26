@@ -38,7 +38,7 @@ jobs:
         -f create-endpoint.yml
     - name: Create deployment file
       run: |
-        printf "\$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json\nname: $tapiatellez-db-dp\nendpoint_name: tapiatellez-db-ep\nmodel: azureml:$JOB_NAME-diabetes-modell@latest\ninstance_type: Standard_DS2_v2\ninstance_count: 1" > create-deployment.yml
+        printf "\$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json\nname: $tapiatellez-db-dp\nendpoint_name: tapiatellez-db-ep\nmodel: azureml:$JOB_NAME-diabetes-model@latest\ninstance_type: Standard_DS2_v2\ninstance_count: 1" > create-deployment.yml
     - name: Check deployment file
       run: cat create-deployment.yml
     - name: Check that the deployment file is in the route
